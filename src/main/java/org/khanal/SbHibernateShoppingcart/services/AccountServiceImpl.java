@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -20,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findByUsername(String username) {
+    public Optional<Account> findByUsername(String username) {
         return accountRepository.findByUsername(username);
     }
 
