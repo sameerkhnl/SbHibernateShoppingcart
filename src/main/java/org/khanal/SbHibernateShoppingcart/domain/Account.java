@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Accounts")
+@Table(name = "ACCOUNTS")
 public class Account {
 
     @Column(length = 20, nullable = false)
