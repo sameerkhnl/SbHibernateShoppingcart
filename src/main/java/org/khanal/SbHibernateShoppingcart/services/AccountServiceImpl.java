@@ -1,5 +1,7 @@
 package org.khanal.SbHibernateShoppingcart.services;
 
+import javassist.NotFoundException;
+import org.khanal.SbHibernateShoppingcart.commands.CustomerInfoCommand;
 import org.khanal.SbHibernateShoppingcart.domain.Account;
 import org.khanal.SbHibernateShoppingcart.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,24 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Optional<Account> findByUsername(String username) {
-        return accountRepository.findByUsername(username);
+    public Account findByUsername(String username) {
+        Optional<Account> accountOptional = accountRepository.findByUsername(username);
+        if(!accountOptional.isPresent()) {
+            throw new RuntimeException("could not find customer info for user " + username);
+        }
+
+        return accountOptional.get();
     }
 
     @Override
     public void deleteAccountByUsername(String username) {
         accountRepository.deleteAccountByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public CustomerInfoCommand saveCustomerInfoCommand(CustomerInfoCommand customerInfoCommand) {
+        return null;
     }
 
     @Override
