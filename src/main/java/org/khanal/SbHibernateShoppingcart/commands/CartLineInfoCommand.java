@@ -40,7 +40,7 @@ public class CartLineInfoCommand {
     }
 
     public void decreaseQuantityByOne() {
-        if(quantity > 0){
+        if(quantity > 1){
             quantity--;
         }
     }

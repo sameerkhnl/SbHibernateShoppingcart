@@ -5,7 +5,9 @@ import org.khanal.SbHibernateShoppingcart.utils.PricingUtil;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class CartInfoCommand {
     private List<CartLineInfoCommand> cartLineInfoCommandList = new ArrayList<>();
@@ -36,7 +38,7 @@ public class CartInfoCommand {
         this.customerInfoCommand = customerInfoCommand;
     }
 
-    private void addItemToCart(ProductInfoCommand productInfoCommand) {
+    public void addItemToCart(ProductInfoCommand productInfoCommand) {
         if (this.findItemInCart(productInfoCommand) >= 0) {
             this.cartLineInfoCommandList.stream().filter(x -> x.getProductInfoCommand().getCode().equals
                     (productInfoCommand.getCode())).findFirst().get().incrementQuantityByOne();
@@ -45,29 +47,45 @@ public class CartInfoCommand {
         }
     }
 
-    private void removeItemFromCart(int index) {
-       this.cartLineInfoCommandList.remove(index);
+    public void removeItemFromCart(int index) {
+        this.cartLineInfoCommandList.remove(index);
     }
 
-    private void subtractItemFromCart(ProductInfoCommand productInfoCommand){
+    public void subtractItemFromCart(ProductInfoCommand productInfoCommand) {
         int index = findItemInCart(productInfoCommand);
-        if(index >= 0){
+        if (index >= 0) {
             this.cartLineInfoCommandList.get(index).decreaseQuantityByOne();
         }
     }
 
     //returns the index of the intem in the list if exists otherwise returns -1
-    private int findItemInCart(ProductInfoCommand productInfoCommand) {
-        Optional<CartLineInfoCommand> optional = this.cartLineInfoCommandList.stream().filter(x -> x
+    public int findItemInCart(ProductInfoCommand productInfoCommand) {
+        AtomicInteger index = new AtomicInteger(0);
+        OptionalInt optionalInt =  IntStream.range(0, this.cartLineInfoCommandList.size()).filter(i -> cartLineInfoCommandList.get(i)
                 .getProductInfoCommand().getCode().equals(productInfoCommand.getCode())).findFirst();
-        if (optional.isPresent()) {
-            int index = this.cartLineInfoCommandList.indexOf(productInfoCommand);
-            return index;
+        if(optionalInt.isPresent()){
+            return optionalInt.getAsInt();
         }
         return -1;
     }
 
-    private BigDecimal getTotalAmount(){
+//        if(optional.isPresent()) {
+//            int i = 0;
+//            cartLineInfoCommandList.stream().filter(x -> {
+////                x.getProductInfoCommand().getCode().equals(productInfoCommand.getCode());
+////            })
+//
+//
+//                for (int i = 0; i < cartLineInfoCommandList.size(); i++) {
+//                    if (optional.get().equals(cartLineInfoCommandList.get(i))) {
+//                        return i;
+//                    }
+//                }
+//            }
+//            return -1;
+//        }
+
+    public BigDecimal getTotalAmount() {
         Set<BigDecimal> bigDecimals = new HashSet<>();
         this.cartLineInfoCommandList.stream().forEach(x -> {
             bigDecimals.add(x.getAmount());

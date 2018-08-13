@@ -1,9 +1,6 @@
 package org.khanal.SbHibernateShoppingcart.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -15,6 +12,7 @@ public class Account {
     @Column(length = 20, nullable = false)
     @NotEmpty
     @NotNull
+    @Id
     private String username;
 
     @Column(length = 1, nullable = false)
