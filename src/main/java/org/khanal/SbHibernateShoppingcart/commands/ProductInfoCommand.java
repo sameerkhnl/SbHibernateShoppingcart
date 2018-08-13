@@ -1,6 +1,11 @@
 package org.khanal.SbHibernateShoppingcart.commands;
 
+import org.khanal.SbHibernateShoppingcart.utils.PricingUtil;
+
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.Objects;
 
 public class ProductInfoCommand {
     private String code;
@@ -10,7 +15,13 @@ public class ProductInfoCommand {
     public ProductInfoCommand(String code, String name, BigDecimal price) {
         this.code = code;
         this.name = name;
-        this.price = price;
+        this.setPrice(price);
+    }
+
+    public ProductInfoCommand(String code, String name, Double price) {
+        this.code = code;
+        this.name = name;
+        this.setPrice(new BigDecimal(price.doubleValue()));
     }
 
     public String getCode() {
@@ -35,5 +46,26 @@ public class ProductInfoCommand {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+        this.price.setScale(PricingUtil.ROUNDING_SCALE, PricingUtil.ROUNDING_MODE);
+    }
+
+    public void setPrice(Double price){
+        this.setPrice(new BigDecimal(price.doubleValue()));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ProductInfoCommand)) return false;
+        ProductInfoCommand that = (ProductInfoCommand) o;
+        return Objects.equals(getCode(), that.getCode()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getPrice(), that.getPrice());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getCode(), getName(), getPrice());
     }
 }
