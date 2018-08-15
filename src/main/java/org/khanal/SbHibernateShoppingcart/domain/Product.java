@@ -1,6 +1,8 @@
 package org.khanal.SbHibernateShoppingcart.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -9,6 +11,8 @@ import java.util.Date;
 public class Product {
     @Id
     @Column(length = 20, nullable = false)
+    @NotNull
+    @NotEmpty
     private String code;
     @Column(nullable = false)
     private BigDecimal price;
@@ -17,6 +21,10 @@ public class Product {
     private byte[] image;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn;
+
+    @NotNull
+    @NotEmpty
+    private String name;
 
     public String getCode() {
         return code;
@@ -48,5 +56,13 @@ public class Product {
 
     public void setCreatedOn(Date createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
