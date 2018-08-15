@@ -5,6 +5,7 @@ import org.khanal.SbHibernateShoppingcart.commands.CustomerInfoCommand;
 import org.khanal.SbHibernateShoppingcart.domain.Account;
 import org.khanal.SbHibernateShoppingcart.repositories.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,11 +17,13 @@ import java.util.Optional;
 public class AccountServiceImpl implements AccountService {
 
     private AccountRepository accountRepository;
+    private PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public AccountServiceImpl(AccountRepository accountRepository){
+    public AccountServiceImpl(AccountRepository accountRepository, PasswordEncoder passwordEncoder){
         this.accountRepository = accountRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -58,6 +61,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Account saveOrUpdate(Account domainObject) {
+        domainObject.setEncryptedPassword(passwordEncoder.encode(domainObject.getPassword()));
         return accountRepository.save(domainObject);
     }
 

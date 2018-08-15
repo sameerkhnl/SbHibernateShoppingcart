@@ -17,23 +17,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SpringSecConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
     private AuthenticationManagerBuilder authenticationManagerBuilder;
     private UserDetailsService userDetailsService;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public SpringSecConfig(AuthenticationManagerBuilder authenticationManagerBuilder, UserDetailsService
-            userDetailsService) {
+            userDetailsService, PasswordEncoder passwordEncoder) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    @Bean("passwordEncoder")
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         try {
-            authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+            authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
         } catch (Exception e) {
             throw new BeanInitializationException("Security configuration failed...", e);
         }

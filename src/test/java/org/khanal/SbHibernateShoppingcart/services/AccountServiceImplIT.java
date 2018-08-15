@@ -37,7 +37,7 @@ public class AccountServiceImplIT {
 
     @Before
     public void setUp() throws Exception {
-        this.accountService = new AccountServiceImpl(accountRepository);
+        this.accountService = new AccountServiceImpl(accountRepository, passwordEncoder);
     }
 
     @Test
@@ -53,10 +53,10 @@ public class AccountServiceImplIT {
         account.setPassword("pd");
         account.setRole("EMPLOYEE");
         account.setUsername("usertest1");
-        account.setEncryptedPassword(passwordEncoder.encode(account.getPassword()));
+        //account.setEncryptedPassword(passwordEncoder.encode(account.getPassword()));
         account.setActive(false);
         Account retrieved = accountService.saveOrUpdate(account);
-        System.out.println(retrieved.getEncryptedPassword());
+        System.out.println("##########" + retrieved.getEncryptedPassword() + "##############");
         assertEquals("usertest1", retrieved.getUsername());
     }
 }
