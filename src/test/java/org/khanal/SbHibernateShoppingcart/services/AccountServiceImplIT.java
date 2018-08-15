@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,12 +22,17 @@ import static org.junit.Assert.*;
 @SpringBootTest()
 public class AccountServiceImplIT {
     private AccountService accountService;
-
+    private PasswordEncoder passwordEncoder;
     private AccountRepository accountRepository;
 
     @Autowired
     public void setAccountRepository(AccountRepository accountRepository){
         this.accountRepository = accountRepository;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Before
@@ -39,5 +45,18 @@ public class AccountServiceImplIT {
         Account retrieved = accountService.findByUsername("sameerkhnl");
         assertNotNull(retrieved);
         assertEquals("pwd", retrieved.getEncryptedPassword());
+    }
+
+    @Test
+    public void saveOrUpdate() {
+        Account account = new Account();
+        account.setPassword("pd");
+        account.setRole("EMPLOYEE");
+        account.setUsername("usertest1");
+        account.setEncryptedPassword(passwordEncoder.encode(account.getPassword()));
+        account.setActive(false);
+        Account retrieved = accountService.saveOrUpdate(account);
+        System.out.println(retrieved.getEncryptedPassword());
+        assertEquals("usertest1", retrieved.getUsername());
     }
 }

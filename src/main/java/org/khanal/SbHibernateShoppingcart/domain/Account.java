@@ -16,9 +16,8 @@ public class Account {
     private String username;
 
     @Column(length = 1, nullable = false)
-    @NotEmpty
     @NotNull
-    private Boolean active;
+    private Boolean active = false;
 
     private static final String ROLE_MANAGER = "MANAGER";
     private static final String ROLE_EMPLOYEE = "EMPLOYEE";
