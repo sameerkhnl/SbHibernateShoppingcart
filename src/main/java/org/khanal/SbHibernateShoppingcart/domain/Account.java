@@ -41,6 +41,7 @@ public class Account {
         this.role = role;
     }
 
+    @Transient
     private Integer failedLoginAttempts;
 
     @Transient
@@ -77,4 +78,5 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }
