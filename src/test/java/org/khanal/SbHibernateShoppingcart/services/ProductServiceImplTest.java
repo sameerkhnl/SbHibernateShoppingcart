@@ -6,6 +6,9 @@ import org.khanal.SbHibernateShoppingcart.domain.Product;
 import org.khanal.SbHibernateShoppingcart.repositories.ProductRepository;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -76,10 +79,10 @@ public class ProductServiceImplTest {
         product1.setPrice(new BigDecimal(12987987.1111111));
 
         Product product2 = new Product();
-        product1.setCode("22222");
-        product1.setCreatedOn(new Date());
-        product1.setImage(new byte[0]);
-        product1.setPrice(new BigDecimal(12987987.4555555));
+        product2.setCode("22222");
+        product2.setCreatedOn(new Date());
+        product2.setImage(new byte[0]);
+        product2.setPrice(new BigDecimal(12987987.4555555));
         productService.saveAll(Arrays.asList(product1, product2));
         verify(productRepository, times(1)).saveAll(Arrays.asList(product1, product2));
     }

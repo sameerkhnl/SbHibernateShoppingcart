@@ -9,6 +9,10 @@ import org.khanal.SbHibernateShoppingcart.domain.Product;
 import org.khanal.SbHibernateShoppingcart.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -16,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -72,7 +73,7 @@ public class ProductServiceImplIT {
 
     @Test
     public void b_listAll() {
-       assertEquals(7, productService.listAll().size());
+        assertEquals(7, productService.listAll().size());
     }
 
     @Test
@@ -96,6 +97,45 @@ public class ProductServiceImplIT {
     public void e_deleteProductByCode() {
         productService.deleteProductByCode("111111");
         assertEquals(7, productService.listAll().size());
+    }
+
+    @Test
+    public void f_findAll() {
+        Product product1 = new Product();
+        product1.setCode("111111");
+        product1.setCreatedOn(new Date());
+        product1.setImage(new byte[0]);
+        product1.setPrice(new BigDecimal(12987987.1111111));
+        product1.setName("product1");
+
+        Product product2 = new Product();
+        product2.setCode("22222");
+        product2.setCreatedOn(new Date());
+        product2.setImage(new byte[0]);
+        product2.setPrice(new BigDecimal(12987987.4555555));
+        product2.setName("product2");
+
+        productService.saveAll(Arrays.asList(product1, product2));
+
+        List<Product> page2 = new ArrayList<>();
+        List<Product> page1 = new ArrayList<>();
+        productService.findAll(1, 3, Sort.Direction.ASC, "name").forEach(page2::add);
+        Page<Product> previous = productService.findAll(0, 3, Sort.Direction.ASC, "name");
+        previous.forEach(page1::add);
+
+        assertEquals("product1", page2.get(0).getName());
+        assertEquals("product2", page2.get(1).getName());
+        assertEquals("product3", page2.get(2).getName());
+
+        assertEquals("Core Java", page1.get(0).getName());
+        assertEquals("CSharp Tutorial for Beginers", page1.get(1).getName());
+        assertEquals("Oracle XML Parser", page1.get(2).getName());
+
+
+        //Page<Product> productPage = productService.findAll(1, 2, Sort.Direction.ASC, "name");
+
+        //productPage.forEach(product -> System.out.println(product.getName()));
+
     }
 
 

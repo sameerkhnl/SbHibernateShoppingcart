@@ -3,6 +3,10 @@ package org.khanal.SbHibernateShoppingcart.services;
 import org.khanal.SbHibernateShoppingcart.domain.Product;
 import org.khanal.SbHibernateShoppingcart.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,6 +61,12 @@ public class ProductServiceImpl implements ProductService {
         List<Product> productList = new ArrayList<>();
         productRepository.saveAll(products).forEach(productList::add);
         return productList;
+    }
+
+    @Override
+    public Page<Product> findAll(int page, int size, Sort.Direction direction, String...properties) {
+        PageRequest pageRequest = PageRequest.of(page, size,  direction, properties);
+        return productRepository.findAll(pageRequest);
     }
 
 
