@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ProductService extends CRUDService<Product> {
@@ -13,4 +14,6 @@ public interface ProductService extends CRUDService<Product> {
     void deleteProductByCode(String code);
     List<Product> saveAll(Collection<Product> products);
     Page<Product> findAll(int page, int size, Sort.Direction direction, String...properties);
+    //Optional<Product> findProductByNameAndCode(String name, String code);
+
 }

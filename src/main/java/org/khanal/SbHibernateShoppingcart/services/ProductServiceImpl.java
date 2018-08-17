@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -68,6 +69,11 @@ public class ProductServiceImpl implements ProductService {
         PageRequest pageRequest = PageRequest.of(page, size,  direction, properties);
         return productRepository.findAll(pageRequest);
     }
+
+//    @Override
+//    public Optional<Product> findProductByNameAndCode(String name, String code) {
+//        //return productRepository.findProductByNameAndCode(name, code);
+//    }
 
 
 }
