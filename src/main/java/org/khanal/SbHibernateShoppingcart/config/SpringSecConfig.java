@@ -76,8 +76,8 @@ public class SpringSecConfig extends WebSecurityConfigurerAdapter implements Ini
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.POST, authenticationPath).and().ignoring().antMatchers(HttpMethod.GET,"/",
-                "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
+        web.ignoring().antMatchers(HttpMethod.POST, authenticationPath).and().ignoring().antMatchers(HttpMethod.GET,
+                "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js", "/h2-console/**/**");
     }
 
 

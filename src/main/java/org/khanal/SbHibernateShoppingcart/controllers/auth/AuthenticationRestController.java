@@ -1,4 +1,4 @@
-package org.khanal.SbHibernateShoppingcart.controllers;
+package org.khanal.SbHibernateShoppingcart.controllers.auth;
 
 import org.khanal.SbHibernateShoppingcart.services.security.UserDetailsImpl;
 import org.khanal.SbHibernateShoppingcart.services.security.jwt.AuthenticationDetails;
@@ -14,7 +14,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
