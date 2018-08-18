@@ -1,6 +1,7 @@
 package org.khanal.SbHibernateShoppingcart.controllers;
 
 import org.khanal.SbHibernateShoppingcart.services.security.UserDetailsImpl;
+import org.khanal.SbHibernateShoppingcart.services.security.jwt.AuthenticationDetails;
 import org.khanal.SbHibernateShoppingcart.services.security.jwt.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
@@ -26,6 +28,9 @@ public class AuthenticationRestController {
     private JwtTokenUtil jwtTokenUtil;
     private UserDetailsService userDetailsService;
 
+    @Value("${jwt.route.authentication.path}")
+    private String authenticationPath;
+
     @Autowired
     public AuthenticationRestController(AuthenticationManager authenticationManager, JwtTokenUtil
             jwtTokenUtil, UserDetailsService userDetailsService) {
@@ -36,17 +41,26 @@ public class AuthenticationRestController {
     }
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody String username, @RequestBody String password) throws AuthenticationException {
-        authenticate(username, password);
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    public ResponseEntity<String> createAuthenticationToken(@RequestBody AuthenticationDetails authDetails) throws AuthenticationException {
+        authenticate(authDetails.getUsername(), authDetails.getPassword());
+        //authenticate(username, password);
+        final UserDetails userDetails = userDetailsService.loadUserByUsername(authDetails.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(token);
+    }
+
+
+    @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.GET)
+    public ResponseEntity<String> getcreateAuthenticationToken() throws AuthenticationException {
+
+        return ResponseEntity.ok("test");
     }
 
 
     public ResponseEntity<String> refreshAndGetAuthenticationToken(HttpServletRequest request){
         String authToken = request.getHeader(tokenHeader);
         final String token = authToken.substring(7);
+
         String username = jwtTokenUtil.getUsernameFromToken(token);
         UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsService.loadUserByUsername(username);
 

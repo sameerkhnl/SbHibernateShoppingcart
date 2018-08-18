@@ -59,4 +59,16 @@ public class AccountServiceImplIT {
         System.out.println("##########" + retrieved.getEncryptedPassword() + "##############");
         assertEquals("usertest1", retrieved.getUsername());
     }
+
+    @Test
+    public void createUser() {
+        Account account = new Account();
+        account.setUsername("sameerkhnl");
+        account.setActive(true);
+        account.setPassword("pwd");
+        account.setRole("ROLE_ADMIN");
+        Account retrieved = accountService.saveOrUpdate(account);
+        System.out.println("##########" + retrieved.getEncryptedPassword() + "##############");
+        assertEquals("sameerkhnl", retrieved.getUsername());
+    }
 }

@@ -1,9 +1,9 @@
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/shopping_cart?useSSL=false
+    url: jdbc:mysql://localhost:3306/shopping_cart_test?useSSL=false
     username: root
-    password: ....
+    password: 4281
   jpa:
     hibernate:
       ddl-auto: none
