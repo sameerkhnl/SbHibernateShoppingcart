@@ -12,16 +12,29 @@ public class ProductInfoCommand {
     private String name;
     private BigDecimal price;
 
-    public ProductInfoCommand(String code, String name, BigDecimal price) {
+
+    private byte[] image;
+
+    public ProductInfoCommand(String code, String name, BigDecimal price, byte[] image) {
         this.code = code;
         this.name = name;
+        this.image= image;
         this.setPrice(price);
     }
 
-    public ProductInfoCommand(String code, String name, Double price) {
+    public ProductInfoCommand(String code, String name, Double price, byte[] image) {
         this.code = code;
         this.name = name;
+        this.image = image;
         this.setPrice(new BigDecimal(price.doubleValue()));
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getCode() {
