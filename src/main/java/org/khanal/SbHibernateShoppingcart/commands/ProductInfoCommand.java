@@ -22,12 +22,28 @@ public class ProductInfoCommand {
         this.setPrice(price);
     }
 
+    public ProductInfoCommand(String code, String name, BigDecimal price) {
+        this.code = code;
+        this.name = name;
+        this.image= image;
+        this.setPrice(price);
+        this.image = new byte[0];
+    }
+
     public ProductInfoCommand(String code, String name, Double price, byte[] image) {
         this.code = code;
         this.name = name;
         this.image = image;
         this.setPrice(new BigDecimal(price.doubleValue()));
     }
+
+    public ProductInfoCommand(String code, String name, Double price) {
+        this.code = code;
+        this.name = name;
+        this.image = new byte[0];
+        this.setPrice(new BigDecimal(price.doubleValue()));
+    }
+
 
     public byte[] getImage() {
         return image;

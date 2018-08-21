@@ -41,12 +41,12 @@ public class AuthenticationRestController {
     }
 
     @RequestMapping(value = "${jwt.route.authentication.path}", method = RequestMethod.POST)
-    public ResponseEntity<String> createAuthenticationToken(@RequestBody AuthenticationDetails authDetails) throws AuthenticationException {
+    public String createAuthenticationToken(@RequestBody AuthenticationDetails authDetails) throws AuthenticationException {
         authenticate(authDetails.getUsername(), authDetails.getPassword());
         //authenticate(username, password);
         final UserDetails userDetails = userDetailsService.loadUserByUsername(authDetails.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(token);
+        return token;
     }
 
 

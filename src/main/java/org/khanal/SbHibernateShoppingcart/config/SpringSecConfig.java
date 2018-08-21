@@ -66,7 +66,7 @@ public class SpringSecConfig extends WebSecurityConfigurerAdapter implements Ini
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/h2-console/**/**", "/auth/**").permitAll().anyRequest()
+                .authorizeRequests().antMatchers("/h2-console/**/**", "/auth/**", "/products/**").permitAll().anyRequest()
                 .authenticated();
         http.addFilterBefore(authorizationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
