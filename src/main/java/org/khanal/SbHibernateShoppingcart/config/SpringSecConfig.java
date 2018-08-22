@@ -64,9 +64,9 @@ public class SpringSecConfig extends WebSecurityConfigurerAdapter implements Ini
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+        http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/h2-console/**/**", "/auth/**", "/products/**").permitAll().anyRequest()
+                .authorizeRequests().antMatchers("/h2-console/**/**", "/products/**", "/auth").permitAll().anyRequest()
                 .authenticated();
         http.addFilterBefore(authorizationTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -76,7 +76,7 @@ public class SpringSecConfig extends WebSecurityConfigurerAdapter implements Ini
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.POST, authenticationPath).and().ignoring().antMatchers(HttpMethod.GET,
+        web.ignoring().antMatchers(HttpMethod.POST, authenticationPath).and().ignoring().antMatchers(HttpMethod.OPTIONS, authenticationPath).and().ignoring().antMatchers(HttpMethod.GET,
                 "/", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js", "/h2-console/**/**");
     }
 
